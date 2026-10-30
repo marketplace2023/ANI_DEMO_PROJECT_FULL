@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AnimeCache {
+  id         Int      @id @default(autoincrement())
+  provider   String   @default("ANILIST")
+  externalId Int
+  data       String
+  updatedAt  DateTime @updatedAt
+
+  @@unique([provider, externalId])
+}
+
+model SearchCache {
+  id         Int      @id @default(autoincrement())
+  queryHash  String   @unique
+  resultJson String
+  createdAt  DateTime @default(now())
+}
+
+model GenreCache {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+}
